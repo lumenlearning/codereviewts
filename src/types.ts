@@ -7,6 +7,7 @@ export interface Choice {
     readonly key: string,
     readonly text: string,
     readonly correct: boolean,
+    correctOrder?: number,
 }
 
 export interface Response {

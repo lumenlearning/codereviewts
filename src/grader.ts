@@ -16,6 +16,30 @@ const grader = (question: Question, choices: Array<Array<Choice>>, response: Res
             return (currentChosenChoice && currentChosenChoice.correct) ? 1.0 : 0.0;
         }).reduce((sum, resp) => (sum += resp), 0);
         return correctResponses / choices.length;
+    } else if (question.questionType === "CLOZE_DRAG_AND_DROP") {
+        let ccio = choices[0].sort((a, b) => a.correctOrder - b.correctOrder);
+        let ccioKeys = ccio.map((cc) => cc.key);
+        let exactSameOrderKeys = true;
+        for (let i = 0; i < ccioKeys.length; i++) {
+            if (ccioKeys[i] !== response.keys[i]) {
+                exactSameOrderKeys = false;
+            }
+        }
+        if (exactSameOrderKeys) {
+            return 1.0;
+        } else {
+            let allKeysPresent = true;
+            for (let k of response.keys) {
+                if (!ccioKeys.includes(k)) {
+                    allKeysPresent = false;
+                }
+            }
+            if (allKeysPresent) {
+                return 0.5;
+            } else {
+                return 0.0;
+            }
+        }
     } else {
         return 0.0;
     }
