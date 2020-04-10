@@ -10,5 +10,5 @@ export interface Choice {
 }
 
 export interface Response {
-    readonly key: string,
+    readonly keys: Array<string>,
 }
