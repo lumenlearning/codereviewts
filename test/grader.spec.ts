@@ -73,4 +73,23 @@ describe("grader", () => {
             expect(grader(question, choices, { keys: [ "A", "C" ] })).toEqual(0.5)
         });
     });
+
+    describe("CLOZE_DRAG_AND_DROP", () => {
+        const question = {
+            questionType: "CLOZE_DRAG_AND_DROP",
+            prompt: "For {target1}, then {target2}",
+        };
+        const choices = [[
+            { key: "A", text: "A", correct: true, correctOrder: 1 },
+            { key: "B", text: "B", correct: true, correctOrder: 2 },
+        ]];
+
+        it("should return 1.0 if responses match correct choices in order", () => {
+            expect(grader(question, choices, { keys: ["A", "B"] })).toEqual(1.0);
+        });
+
+        it("should return 0.5 if responses are out of order", () => {
+            expect(grader(question, choices, { keys: ["B", "A"] })).toEqual(0.5);
+        });
+    });
 });
